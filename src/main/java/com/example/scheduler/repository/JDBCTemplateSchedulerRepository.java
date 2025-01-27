@@ -93,6 +93,11 @@ public class JDBCTemplateSchedulerRepository implements SchedulerRepository {
         return jdbcTemplate.update("UPDATE schedule SET contents=?, writer=? WHERE schedule_id=?", contents, writer, id);
     }
 
+    @Override
+    public int deleteSchedule(Long id) {
+        return jdbcTemplate.update("DELETE FROM schedule WHERE schedule_id=?", id);
+    }
+
     private RowMapper<SchedulerResponseDto> scheduleRowMapper() {
         return (rs, rowNum) -> {
             return new SchedulerResponseDto(

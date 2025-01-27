@@ -48,17 +48,20 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     @Override
     public SchedulerResponseDto updateSchedule(Long id, String contents, String writer, String password) {
-
+        // 입력 내용 확인
         if (contents ==null || writer == null || password == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid parameters");
         }
 
+        // 비밀번호 확인
         if (!schedulerRepository.checkPassword(id, password)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "It's either an ID that doesn't exist or an incorrect password");
         }
 
+        // 업데이트 실행
         int updateRow = schedulerRepository.updateSchedule(id, contents, writer);
 
+        // 업데이트 내역 없을 경우, Exception 처리
         if (updateRow == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dose not exited id =" + id);
         }
@@ -66,5 +69,19 @@ public class SchedulerServiceImpl implements SchedulerService {
         Optional<Schedule>optionalSchedule = schedulerRepository.findScheduleById(id);
 
         return new SchedulerResponseDto(optionalSchedule.get());
+    }
+
+    @Override
+    public void deleteSchedule(Long id, String password) {
+        // 비밀번호 확인
+        if (!schedulerRepository.checkPassword(id, password)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "It's either an ID that doesn't exist or an incorrect password");
+        }
+
+        int deleteRow = schedulerRepository.deleteSchedule(id);
+
+        if (deleteRow == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dose not exited id =" + id);
+        }
     }
 }
