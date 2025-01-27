@@ -1,14 +1,25 @@
-﻿package com.example.scheduler.entity;
+package com.example.scheduler.entity;
 
-import java.time.LocalDate;
+import com.example.scheduler.dto.SchedulerRequestDto;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
+import java.time.LocalDateTime;
+
+@Getter
+@AllArgsConstructor
 public class Schedule {
 
     private Long scheduleId;
     private String contents;
-    private LocalDate update;
+    private String writer;
+    private String password;
+    private LocalDateTime updateTime;
 
-    private User user;
-
-
+    public Schedule(SchedulerRequestDto dto) {
+        this.contents = dto.getContents();
+        this.writer = dto.getWriter();
+        this.password = dto.getPassword();
+        this.updateTime = LocalDateTime.now();
+    }
 }
