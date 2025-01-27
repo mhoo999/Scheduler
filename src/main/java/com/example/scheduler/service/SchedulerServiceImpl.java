@@ -45,4 +45,26 @@ public class SchedulerServiceImpl implements SchedulerService {
 
         return new SchedulerResponseDto(optionalSchedule.get());
     }
+
+    @Override
+    public SchedulerResponseDto updateSchedule(Long id, String contents, String writer, String password) {
+
+        if (contents ==null || writer == null || password == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid parameters");
+        }
+
+        if (!schedulerRepository.checkPassword(id, password)) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "It's either an ID that doesn't exist or an incorrect password");
+        }
+
+        int updateRow = schedulerRepository.updateSchedule(id, contents, writer);
+
+        if (updateRow == 0) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dose not exited id =" + id);
+        }
+
+        Optional<Schedule>optionalSchedule = schedulerRepository.findScheduleById(id);
+
+        return new SchedulerResponseDto(optionalSchedule.get());
+    }
 }

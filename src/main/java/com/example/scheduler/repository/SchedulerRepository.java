@@ -11,4 +11,6 @@ public interface SchedulerRepository {
     SchedulerResponseDto saveSchedule(Schedule schedule);
     List<SchedulerResponseDto>findScheduleByFilter(SchedulerRequestDto dto);
     Optional<Schedule> findScheduleById(Long id);
+    Boolean checkPassword(Long id, String password);
+    int updateSchedule(Long id, String contents, String writer);
 }

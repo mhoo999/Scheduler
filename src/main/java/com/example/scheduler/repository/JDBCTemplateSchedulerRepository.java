@@ -3,6 +3,7 @@ package com.example.scheduler.repository;
 import com.example.scheduler.dto.SchedulerRequestDto;
 import com.example.scheduler.dto.SchedulerResponseDto;
 import com.example.scheduler.entity.Schedule;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -75,6 +76,21 @@ public class JDBCTemplateSchedulerRepository implements SchedulerRepository {
         List<Schedule> result = jdbcTemplate.query("SELECT * FROM schedule WHERE schedule_id=?", scheduleRowMapperV2(), id);
 
         return result.stream().findAny();
+    }
+
+    @Override
+    public Boolean checkPassword(Long id, String password) {
+        try {
+            String targetPassword = jdbcTemplate.queryForObject("SELECT password FROM schedule WHERE schedule_id=?", new Object[]{id}, String.class);
+            return targetPassword != null && targetPassword.equals(password);
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    @Override
+    public int updateSchedule(Long id, String contents, String writer) {
+        return jdbcTemplate.update("UPDATE schedule SET contents=?, writer=? WHERE schedule_id=?", contents, writer, id);
     }
 
     private RowMapper<SchedulerResponseDto> scheduleRowMapper() {
