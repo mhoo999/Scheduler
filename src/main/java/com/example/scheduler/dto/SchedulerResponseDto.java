@@ -18,7 +18,7 @@ public class SchedulerResponseDto {
     public SchedulerResponseDto(Schedule schedule) {
         scheduleId = schedule.getScheduleId();
         contents = schedule.getContents();
-        writer = schedule.getWriter();
-        updateTime = schedule.getUpdateTime();
+        writer = schedule.getUser().getWriter();
+        updateTime = schedule.getUpdatedAt();
     }
 }

@@ -12,14 +12,24 @@ public class Schedule {
 
     private Long scheduleId;
     private String contents;
-    private String writer;
-    private String password;
-    private LocalDateTime updateTime;
+    private LocalDateTime updatedAt;
+    private Long userId;
+    private User user;
 
-    public Schedule(SchedulerRequestDto dto) {
+    public Schedule(SchedulerRequestDto dto, Long userId, User user) {
+
         this.contents = dto.getContents();
-        this.writer = dto.getWriter();
-        this.password = dto.getPassword();
-        this.updateTime = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
+        this.userId = userId;
+        this.user = user;
+
+    }
+
+    public Schedule(Long id, String contents, LocalDateTime updatedAt, Long userId) {
+        this.scheduleId = id;
+        this.contents = contents;
+        this.updatedAt = updatedAt;
+        this.userId = userId;
+        this.user = null;
     }
 }

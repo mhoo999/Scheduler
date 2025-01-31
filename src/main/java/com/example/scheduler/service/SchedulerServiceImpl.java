@@ -3,6 +3,7 @@ package com.example.scheduler.service;
 import com.example.scheduler.dto.SchedulerRequestDto;
 import com.example.scheduler.dto.SchedulerResponseDto;
 import com.example.scheduler.entity.Schedule;
+import com.example.scheduler.entity.User;
 import com.example.scheduler.repository.SchedulerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -24,8 +25,10 @@ public class SchedulerServiceImpl implements SchedulerService {
     @Override
     public SchedulerResponseDto saveSchedule(SchedulerRequestDto dto) {
 
-        LocalDateTime currentTime = LocalDateTime.now();
-        Schedule schedule = new Schedule(dto);
+        User user = new User(dto);
+        Long userId = schedulerRepository.findOrSaveUser(user);
+
+        Schedule schedule = new Schedule(dto, userId, user);
 
         return schedulerRepository.saveSchedule(schedule);
     }
