@@ -1,9 +1,6 @@
 package com.example.scheduler.service;
 
-import com.example.scheduler.dto.CreateScheduleRequestDto;
-import com.example.scheduler.dto.CreateScheduleResponseDto;
-import com.example.scheduler.dto.SchedulerRequestDto;
-import com.example.scheduler.dto.SchedulerResponseDto;
+import com.example.scheduler.dto.*;
 import com.example.scheduler.entity.Schedule;
 import com.example.scheduler.entity.User;
 import com.example.scheduler.repository.SchedulerRepository;
@@ -11,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -88,5 +84,10 @@ public class SchedulerServiceImpl implements SchedulerService {
         if (deleteRow == 0) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dose not exited id =" + id);
         }
+    }
+
+    @Override
+    public List<SchedulerResponseDto> findPage(PaginationDto dto) {
+        return schedulerRepository.findPage(dto);
     }
 }

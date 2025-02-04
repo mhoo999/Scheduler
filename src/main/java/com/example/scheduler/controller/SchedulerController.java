@@ -49,4 +49,10 @@ public class SchedulerController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    // 페이지네이션
+    @GetMapping("/page")
+    public List<SchedulerResponseDto> findPage(@RequestBody PaginationDto dto) {
+        return schedulerService.findPage(dto);
+    }
 }

@@ -1,12 +1,8 @@
 package com.example.scheduler.repository;
 
-import com.example.scheduler.dto.CreateScheduleRequestDto;
-import com.example.scheduler.dto.CreateScheduleResponseDto;
-import com.example.scheduler.dto.SchedulerRequestDto;
-import com.example.scheduler.dto.SchedulerResponseDto;
+import com.example.scheduler.dto.*;
 import com.example.scheduler.entity.Schedule;
 import com.example.scheduler.entity.User;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -118,6 +114,17 @@ public class JDBCTemplateSchedulerRepository implements SchedulerRepository {
         String existingPassword = jdbcTemplate.queryForObject("SELECT password FROM schedule s JOIN user u ON s.user_id = u.user_id WHERE s.schedule_id=?", new Object[]{scheduleId}, String.class);
 
         return existingPassword.equals(password) ? true : false;
+    }
+
+    @Override
+    public List<SchedulerResponseDto> findPage(PaginationDto dto) {
+        int page = dto.getPage();
+        int size = dto.getSize();
+        int offset = (page - 1) * size;
+
+        String sql = "SELECT s.*, u.writer FROM schedule s JOIN user u ON s.user_id = u.user_id ORDER BY s.schedule_id LIMIT ? OFFSET ?";
+
+        return jdbcTemplate.query(sql, scheduleRowMapper(), size, offset);
     }
 
     private RowMapper<SchedulerResponseDto> scheduleRowMapper() {
