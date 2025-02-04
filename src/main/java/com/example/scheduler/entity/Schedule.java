@@ -1,5 +1,6 @@
 package com.example.scheduler.entity;
 
+import com.example.scheduler.dto.CreateScheduleRequestDto;
 import com.example.scheduler.dto.SchedulerRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,7 +17,7 @@ public class Schedule {
     private Long userId;
     private User user;
 
-    public Schedule(SchedulerRequestDto dto, Long userId, User user) {
+    public Schedule(CreateScheduleRequestDto dto, Long userId, User user) {
 
         this.contents = dto.getContents();
         this.updatedAt = LocalDateTime.now();

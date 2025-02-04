@@ -1,5 +1,7 @@
 package com.example.scheduler.repository;
 
+import com.example.scheduler.dto.CreateScheduleRequestDto;
+import com.example.scheduler.dto.CreateScheduleResponseDto;
 import com.example.scheduler.dto.SchedulerRequestDto;
 import com.example.scheduler.dto.SchedulerResponseDto;
 import com.example.scheduler.entity.Schedule;
@@ -60,7 +62,7 @@ public class JDBCTemplateSchedulerRepository implements SchedulerRepository {
     }
 
     @Override
-    public SchedulerResponseDto saveSchedule(Schedule schedule) {
+    public CreateScheduleResponseDto saveSchedule(Schedule schedule) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
         jdbcInsert.withTableName("schedule").usingGeneratedKeyColumns("schedule_id");
 
@@ -71,7 +73,7 @@ public class JDBCTemplateSchedulerRepository implements SchedulerRepository {
 
         Number key = jdbcInsert.executeAndReturnKey(new MapSqlParameterSource(parameters));
 
-        return new SchedulerResponseDto(key.longValue(), schedule.getContents(), schedule.getUser().getWriter(), schedule.getUpdatedAt());
+        return new CreateScheduleResponseDto(key.longValue(), schedule.getContents(), schedule.getUser().getWriter(), schedule.getUpdatedAt());
     }
 
     @Override

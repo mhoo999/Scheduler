@@ -1,5 +1,6 @@
 package com.example.scheduler.entity;
 
+import com.example.scheduler.dto.CreateScheduleRequestDto;
 import com.example.scheduler.dto.SchedulerRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,7 +19,7 @@ public class User {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public User(SchedulerRequestDto dto) {
+    public User(CreateScheduleRequestDto dto) {
         this.email = dto.getEmail();
         this.password = dto.getPassword();
         this.writer = dto.getWriter();

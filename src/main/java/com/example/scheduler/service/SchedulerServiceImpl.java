@@ -1,5 +1,7 @@
 package com.example.scheduler.service;
 
+import com.example.scheduler.dto.CreateScheduleRequestDto;
+import com.example.scheduler.dto.CreateScheduleResponseDto;
 import com.example.scheduler.dto.SchedulerRequestDto;
 import com.example.scheduler.dto.SchedulerResponseDto;
 import com.example.scheduler.entity.Schedule;
@@ -23,7 +25,7 @@ public class SchedulerServiceImpl implements SchedulerService {
     }
 
     @Override
-    public SchedulerResponseDto saveSchedule(SchedulerRequestDto dto) {
+    public CreateScheduleResponseDto saveSchedule(CreateScheduleRequestDto dto) {
 
         User user = new User(dto);
         Long userId = schedulerRepository.findOrSaveUser(user);

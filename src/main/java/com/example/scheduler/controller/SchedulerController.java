@@ -1,7 +1,6 @@
 package com.example.scheduler.controller;
 
-import com.example.scheduler.dto.SchedulerRequestDto;
-import com.example.scheduler.dto.SchedulerResponseDto;
+import com.example.scheduler.dto.*;
 import com.example.scheduler.service.SchedulerService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,7 @@ public class SchedulerController {
 
     // 스케줄 생성
     @PostMapping
-    public ResponseEntity<SchedulerResponseDto> createSchedule(@RequestBody SchedulerRequestDto dto) {
+    public ResponseEntity<CreateScheduleResponseDto> createSchedule(@RequestBody CreateScheduleRequestDto dto) {
         return new ResponseEntity<>(schedulerService.saveSchedule(dto), HttpStatus.CREATED);
     }
 
@@ -39,13 +38,13 @@ public class SchedulerController {
 
     // 스케줄 수정
     @PatchMapping("/{id}")
-    public ResponseEntity<SchedulerResponseDto> updateSchedule(@PathVariable Long id, @RequestBody SchedulerRequestDto dto) {
+    public ResponseEntity<SchedulerResponseDto> updateSchedule(@PathVariable Long id, @RequestBody UpdateScheduleRequestDto dto) {
         return new ResponseEntity<>(schedulerService.updateSchedule(id, dto.getContents(), dto.getWriter(), dto.getPassword()), HttpStatus.OK);
     }
 
     // 스케줄 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id, @RequestBody SchedulerRequestDto dto) {
+    public ResponseEntity<Void> deleteSchedule(@PathVariable Long id, @RequestBody DeleteScheduleRequestDto dto) {
         schedulerService.deleteSchedule(id, dto.getPassword());
 
         return new ResponseEntity<>(HttpStatus.OK);
