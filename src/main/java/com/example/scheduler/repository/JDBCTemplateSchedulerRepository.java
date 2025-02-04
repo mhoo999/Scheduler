@@ -31,6 +31,7 @@ public class JDBCTemplateSchedulerRepository implements SchedulerRepository {
         // user 테이블에서 user_id를 검색
         List<Long> userIds = jdbcTemplate.queryForList("SELECT user_id FROM user WHERE email=?", new Object[]{email}, Long.class);
 
+        // user가 없다면 새로 생성, 있다면 패스워드 확인
         if (userIds.isEmpty()) {
             SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
             jdbcInsert.withTableName("user").usingGeneratedKeyColumns("user_id");
@@ -92,9 +93,7 @@ public class JDBCTemplateSchedulerRepository implements SchedulerRepository {
 
     @Override
     public Optional<Schedule> findScheduleById(Long id) {
-        List<Schedule> result = jdbcTemplate.query(
-                "SELECT * FROM schedule s JOIN user u ON s.user_id = u.user_id WHERE s.schedule_id=?"
-        , scheduleRowMapperV2(), id);
+        List<Schedule> result = jdbcTemplate.query("SELECT * FROM schedule s JOIN user u ON s.user_id = u.user_id WHERE s.schedule_id=?", scheduleRowMapperV2(), id);
 
         return result.stream().findAny();
     }

@@ -24,6 +24,7 @@ public class SchedulerServiceImpl implements SchedulerService {
     public CreateScheduleResponseDto saveSchedule(CreateScheduleRequestDto dto) {
 
         User user = new User(dto);
+        // findOrSaveUser = DB에 user를 조회하고 없다면 생성, 있다면 패스워드 확인하는 메소드
         Long userId = schedulerRepository.findOrSaveUser(user);
 
         Schedule schedule = new Schedule(dto, userId, user);
@@ -40,6 +41,7 @@ public class SchedulerServiceImpl implements SchedulerService {
     public SchedulerResponseDto findScheduleById(Long id) {
         Optional<Schedule>optionalSchedule = schedulerRepository.findScheduleById(id);
 
+        // 없을 경우
         if (optionalSchedule.isEmpty()) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Dose not exited id =" + id);
         }
