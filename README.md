@@ -3,7 +3,7 @@
 API Link
 https://documenter.getpostman.com/view/41349915/2sAYX6q2UX
 
-SQL
+##SQL
 ```sql
 CREATE TABLE schedule (
     schedule_id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT '스케줄 식별자',
